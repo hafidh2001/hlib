@@ -128,7 +128,14 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
           return `https://${defaultSite?.domains?.[0]}`;
         }
 
-        return "";
+        // Default fallback for any unknown domain
+        if (typeof window === "undefined") {
+          return `http://localhost:${config.backend?.devPort || config.backend?.prodPort || 7500}`;
+        }
+        if (window.location.protocol === "https:") {
+          return window.location.origin;
+        }
+        return `http://${window.location.hostname}:${config.backend?.prodPort || 7500}`;
       },
     }
   ) as unknown as {
