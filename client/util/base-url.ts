@@ -54,9 +54,6 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
     {},
     {
       get(target, p: keyof typeof config.sites, receiver) {
-        console.log("[defineBaseUrl] Proxy accessed with key:", p);
-        console.log("[defineBaseUrl] Config sites:", config.sites);
-        
         let mode = "dev";
         if (typeof window === "undefined") {
           // Server-side rendering or Node.js environment

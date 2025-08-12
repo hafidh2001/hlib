@@ -36,9 +36,7 @@ export const apiClient = <T extends ApiDefinitions, K extends keyof T>(
             const firstSite = Object.keys(config.sites || {})[0];
             if (firstSite) {
               const siteKey = firstSite.replace(/\./g, "_");
-              console.log("[API Client] Accessing base URL with key:", siteKey);
               baseUrl = base[siteKey];
-              console.log("[API Client] Got base URL:", baseUrl);
             } else {
               // No sites configured, use a fallback
               if (typeof window !== "undefined") {
