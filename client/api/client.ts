@@ -34,9 +34,38 @@ export const apiClient = <T extends ApiDefinitions, K extends keyof T>(
           if (domain === "_" || !domain) {
             // Use default domain or first available domain
             const firstSite = Object.keys(config.sites || {})[0];
-            baseUrl = firstSite ? base[firstSite.replace(".", "_")] : base.default;
+            if (firstSite) {
+              const siteKey = firstSite.replace(/\./g, "_");
+              console.log("[API Client] Accessing base URL with key:", siteKey);
+              baseUrl = base[siteKey];
+              console.log("[API Client] Got base URL:", baseUrl);
+            } else {
+              // No sites configured, use a fallback
+              if (typeof window !== "undefined") {
+                if (window.location.protocol === "https:") {
+                  baseUrl = window.location.origin;
+                } else {
+                  baseUrl = `http://${window.location.hostname}:${config.backend?.prodPort || 7500}`;
+                }
+              } else {
+                baseUrl = `http://localhost:${config.backend?.devPort || config.backend?.prodPort || 7500}`;
+              }
+            }
           } else {
             baseUrl = base[domain as string] as string;
+          }
+          
+          // Fallback if baseUrl is still undefined
+          if (!baseUrl) {
+            if (typeof window !== "undefined") {
+              if (window.location.protocol === "https:") {
+                baseUrl = window.location.origin;
+              } else {
+                baseUrl = `http://${window.location.hostname}:${config.backend?.prodPort || 7500}`;
+              }
+            } else {
+              baseUrl = `http://localhost:${config.backend?.devPort || config.backend?.prodPort || 7500}`;
+            }
           }
 
           const finalUrl = new URL(baseUrl);
