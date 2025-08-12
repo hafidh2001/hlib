@@ -10,7 +10,7 @@ export const initBaseFile = async () => {
 
   const base_url = Bun.file(dir.path("frontend:src/lib/gen/base-url.ts"));
   await base_url.write(`\
-import { defineBaseUrl, type SiteConfig } from "rlib/client";
+import { defineBaseUrl, type SiteConfig } from "hlib/client";
 import raw_config from "../../../../config.json";
 
 const config = raw_config satisfies SiteConfig;
@@ -21,7 +21,7 @@ export const baseUrl = defineBaseUrl(config);
 
   if (!(await server_base.exists())) {
     await server_base.write(`\
-  import { defineBaseUrl, type SiteConfig } from "rlib/server";
+  import { defineBaseUrl, type SiteConfig } from "hlib/server";
   import raw_config from "../../../config.json";
   
   const config = raw_config satisfies SiteConfig;

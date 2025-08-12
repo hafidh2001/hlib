@@ -4,7 +4,7 @@ export const initBaseFile = async () => {
   dir.ensure("frontend:src/lib/gen");
 
   await Bun.file(dir.path("frontend:src/lib/gen/base-url.ts")).write(`\
-import { defineBaseUrl, type SiteConfig } from "rlib/client";
+import { defineBaseUrl, type SiteConfig } from "hlib/client";
 import raw_config from "../../../../config.json";
 
 const config = raw_config satisfies SiteConfig;

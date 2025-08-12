@@ -180,7 +180,7 @@ export default defineAPI({
   });
 
   const content = `// Auto-generated API exports
-import type { ApiDefinitions } from "rlib/server";
+import type { ApiDefinitions } from "hlib/server";
 ${apiImports.join("\n")}
 
 export const backendApi = {
@@ -189,7 +189,7 @@ ${apiObjectEntries}
 `;
 
   const dryContent = `// Auto-generated API exports
-import type { ApiUrls } from "rlib/server";
+import type { ApiUrls } from "hlib/server";
 
 export const endpoints = {
 ${dryObjectEntries}
@@ -221,7 +221,7 @@ ${dryObjectEntries}
     if (!fs.existsSync(outfile)) {
       const content = `// Auto-generated file - DO NOT EDIT
 
-import { apiClient } from "rlib/client";
+import { apiClient } from "hlib/client";
 import type { backendApi } from "../../../../backend/src/gen/api";
 import { endpoints } from "../../../../backend/src/gen/api.url";
 import config from "../../../../config.json";
@@ -244,7 +244,7 @@ export const api = apiClient({} as unknown as typeof backendApi, endpoints, conf
         if (!fs.existsSync(outfile)) {
           const content = `// Auto-generated file - DO NOT EDIT
 
-import { apiClient } from "rlib/client";
+import { apiClient } from "hlib/client";
 import type { backendApi } from "../../../../backend/src/gen/api";
 import { endpoints } from "../../../../backend/src/gen/api.url";
 import config from "../../../../config.json";

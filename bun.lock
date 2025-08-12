@@ -6,6 +6,7 @@
       "dependencies": {
         "bun-plugin-tailwind": "^0.0.15",
         "cheerio": "^1.0.0",
+        "dotenv": "^17.2.1",
         "lodash": "^4.17.21",
         "oracledb": "^6.8.0",
         "pg": "^8.14.1",
@@ -83,6 +84,8 @@
     "domhandler": ["domhandler@5.0.3", "", { "dependencies": { "domelementtype": "^2.3.0" } }, "sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w=="],
 
     "domutils": ["domutils@3.2.2", "", { "dependencies": { "dom-serializer": "^2.0.0", "domelementtype": "^2.3.0", "domhandler": "^5.0.3" } }, "sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw=="],
+
+    "dotenv": ["dotenv@17.2.1", "", {}, "sha512-kQhDYKZecqnM0fCnzI5eIv5L4cAe/iRI+HqMbO/hbRdTAeXDG+M9FjipUxNfbARuEg4iHIbhnhs78BCHNbSxEQ=="],
 
     "doublylinked": ["doublylinked@2.5.6", "", {}, "sha512-oskbNBycNHjQ0Zg/5DMYiqFnSeblM2BSc2Ehu5+PyBay0ESlullPp0YEjlwtG3QtN4Fb7hC9USJqNyTMftl/1A=="],
 
