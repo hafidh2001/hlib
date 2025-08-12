@@ -6,12 +6,31 @@ declare const window: {
     port: string;
     hostname: string;
     protocol: string;
+    origin: string;
   };
 } | undefined;
 
 export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
   let defaultSite: SiteEntry | null = null;
   let defaultSiteName = "";
+
+  // Handle simple case when no sites defined
+  if (!config.sites || Object.keys(config.sites).length === 0) {
+    // Return simple URL based on current location
+    return new Proxy({}, {
+      get() {
+        if (typeof window === "undefined") {
+          return `http://localhost:${config.backend?.devPort || config.backend?.prodPort || 7500}`;
+        }
+        // In production (HTTPS), use current origin
+        if (window.location.protocol === "https:") {
+          return window.location.origin;
+        }
+        // In development, use configured port
+        return `http://${window.location.hostname}:${config.backend?.prodPort || 7500}`;
+      }
+    });
+  }
 
   if (config.sites) {
     for (const siteName in config.sites) {
