@@ -42,6 +42,12 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
         }
       }
     }
+    // If no default site is marked, use the first site as default
+    if (!defaultSite && Object.keys(config.sites).length > 0) {
+      const firstSiteName = Object.keys(config.sites)[0];
+      defaultSite = config.sites[firstSiteName];
+      defaultSiteName = firstSiteName;
+    }
   }
 
   return new Proxy(
@@ -53,12 +59,15 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
         
         let mode = "dev";
         if (typeof window === "undefined") {
+          // Server-side rendering or Node.js environment
+          const site = config.sites?.[p.replace(/_/g, ".")];
           if (mode === "dev") {
-            return `http://${defaultSite?.domains?.[0]}:${
-              defaultSite?.devPort || 3000
-            }`;
+            const devPort = site?.devPort || defaultSite?.devPort || config.backend?.devPort || 3000;
+            return `http://localhost:${devPort}`;
           }
-          return `https://${defaultSite?.domains?.[0]}`;
+          // In production, still use localhost with prod port for server-side
+          const prodPort = config.backend?.prodPort || 7500;
+          return `http://localhost:${prodPort}`;
         }
         if (
           (typeof window !== "undefined" && parseInt(window.location.port) === config.backend.prodPort &&
