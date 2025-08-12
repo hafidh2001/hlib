@@ -29,7 +29,17 @@ export const apiClient = <T extends ApiDefinitions, K extends keyof T>(
 
           let base = defineBaseUrl(config);
 
-          const finalUrl = new URL(base[domain as string] as string);
+          // Handle "_" domain as default or first available domain
+          let baseUrl: string;
+          if (domain === "_" || !domain) {
+            // Use default domain or first available domain
+            const firstSite = Object.keys(config.sites || {})[0];
+            baseUrl = firstSite ? base[firstSite.replace(".", "_")] : base.default;
+          } else {
+            baseUrl = base[domain as string] as string;
+          }
+
+          const finalUrl = new URL(baseUrl);
           finalUrl.pathname = url;
 
           const _fetch =
