@@ -54,6 +54,11 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
     {},
     {
       get(target, p: keyof typeof config.sites, receiver) {
+        // If we're in HTTPS (production), always use current origin
+        if (typeof window !== "undefined" && window.location.protocol === "https:") {
+          return window.location.origin;
+        }
+        
         let mode = "dev";
         if (typeof window === "undefined") {
           // Server-side rendering or Node.js environment
@@ -113,7 +118,13 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
 
           return `http://${typeof window !== "undefined" ? window.location.hostname : 'localhost'}:${devPort}`;
         } else {
+          // Production mode
           const site = config.sites?.[p.replace(/_/g, ".")];
+
+          // If we're in a browser, use the current origin for HTTPS
+          if (typeof window !== "undefined" && window.location.protocol === "https:") {
+            return window.location.origin;
+          }
 
           if (site) {
             if (site.domains) {
@@ -131,10 +142,23 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
                   return finalUrl.substring(0, finalUrl.length - 1);
                 }
               }
-              return `https://${site.domains?.[0]}`;
+              // If no domain matches but site has domains, use first one
+              if (site.domains.length > 0) {
+                return `https://${site.domains[0]}`;
+              }
             }
           }
-          return `https://${defaultSite?.domains?.[0]}`;
+          
+          // Fallback to defaultSite or current origin
+          if (defaultSite?.domains?.[0]) {
+            return `https://${defaultSite.domains[0]}`;
+          }
+          
+          // Final fallback - use current origin if in browser, otherwise localhost
+          if (typeof window !== "undefined") {
+            return window.location.origin;
+          }
+          return `http://localhost:${config.backend?.prodPort || 7500}`;
         }
 
         // Default fallback for any unknown domain
