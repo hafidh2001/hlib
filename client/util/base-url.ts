@@ -78,7 +78,7 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
         }
 
         if (mode === "dev") {
-          const site = config.sites[p.replace(/_/g, ".")];
+          const site = config.sites?.[p.replace(/_/g, ".")];
 
           if (isGithubCodespace && site) {
             const parts = window.location.hostname.split("-");
@@ -104,7 +104,7 @@ export const defineBaseUrl = <T extends SiteConfig>(config: T) => {
 
           return `http://${typeof window !== "undefined" ? window.location.hostname : 'localhost'}:${devPort}`;
         } else {
-          const site = config.sites[p.replace(/_/g, ".")];
+          const site = config.sites?.[p.replace(/_/g, ".")];
 
           if (site) {
             if (site.domains) {
