@@ -67,8 +67,9 @@ export class OracleClient<M extends Record<string, ModelDefinition<string>>> {
     // Configure oracledb to return objects instead of arrays by default
     oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
-    // Enable support for returning auto-increment values (RETURNING INTO)
-    oracledb.autoCommit = false;
+    // Enable autoCommit by default like Laravel does
+    // This ensures all INSERT/UPDATE/DELETE are immediately committed
+    oracledb.autoCommit = true;
   }
 
   /**
